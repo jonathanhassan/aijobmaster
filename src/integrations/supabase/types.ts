@@ -14,7 +14,369 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_generations: {
+        Row: {
+          application_id: string | null
+          created_at: string | null
+          cv_id: string | null
+          id: string
+          input: Json | null
+          output: string | null
+          type: string
+          user_id: string
+          version: number | null
+        }
+        Insert: {
+          application_id?: string | null
+          created_at?: string | null
+          cv_id?: string | null
+          id?: string
+          input?: Json | null
+          output?: string | null
+          type: string
+          user_id: string
+          version?: number | null
+        }
+        Update: {
+          application_id?: string | null
+          created_at?: string | null
+          cv_id?: string | null
+          id?: string
+          input?: Json | null
+          output?: string | null
+          type?: string
+          user_id?: string
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_generations_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_generations_cv_id_fkey"
+            columns: ["cv_id"]
+            isOneToOne: false
+            referencedRelation: "cvs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      applications: {
+        Row: {
+          ai_score: Json | null
+          applied_at: string | null
+          archive_reason: string | null
+          archived_at: string | null
+          benefits: Json | null
+          company: string
+          company_logo: string | null
+          company_size: string | null
+          company_website: string | null
+          contacts: Json | null
+          contract_type: string | null
+          cover_letter: string | null
+          created_at: string | null
+          cv_used: string | null
+          description: string | null
+          follow_ups: Json | null
+          id: string
+          interviews: Json | null
+          location: string | null
+          nice_to_have_skills: Json | null
+          notes: string | null
+          personal_note: string | null
+          personal_rating: number | null
+          priority: string | null
+          remote: string | null
+          required_skills: Json | null
+          salary_currency: string | null
+          salary_max: number | null
+          salary_min: number | null
+          sector: string | null
+          source_url: string | null
+          status: string | null
+          tags: Json | null
+          timeline: Json | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_score?: Json | null
+          applied_at?: string | null
+          archive_reason?: string | null
+          archived_at?: string | null
+          benefits?: Json | null
+          company: string
+          company_logo?: string | null
+          company_size?: string | null
+          company_website?: string | null
+          contacts?: Json | null
+          contract_type?: string | null
+          cover_letter?: string | null
+          created_at?: string | null
+          cv_used?: string | null
+          description?: string | null
+          follow_ups?: Json | null
+          id?: string
+          interviews?: Json | null
+          location?: string | null
+          nice_to_have_skills?: Json | null
+          notes?: string | null
+          personal_note?: string | null
+          personal_rating?: number | null
+          priority?: string | null
+          remote?: string | null
+          required_skills?: Json | null
+          salary_currency?: string | null
+          salary_max?: number | null
+          salary_min?: number | null
+          sector?: string | null
+          source_url?: string | null
+          status?: string | null
+          tags?: Json | null
+          timeline?: Json | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_score?: Json | null
+          applied_at?: string | null
+          archive_reason?: string | null
+          archived_at?: string | null
+          benefits?: Json | null
+          company?: string
+          company_logo?: string | null
+          company_size?: string | null
+          company_website?: string | null
+          contacts?: Json | null
+          contract_type?: string | null
+          cover_letter?: string | null
+          created_at?: string | null
+          cv_used?: string | null
+          description?: string | null
+          follow_ups?: Json | null
+          id?: string
+          interviews?: Json | null
+          location?: string | null
+          nice_to_have_skills?: Json | null
+          notes?: string | null
+          personal_note?: string | null
+          personal_rating?: number | null
+          priority?: string | null
+          remote?: string | null
+          required_skills?: Json | null
+          salary_currency?: string | null
+          salary_max?: number | null
+          salary_min?: number | null
+          sector?: string | null
+          source_url?: string | null
+          status?: string | null
+          tags?: Json | null
+          timeline?: Json | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cvs: {
+        Row: {
+          analysis: Json | null
+          average_ats_score: number | null
+          created_at: string | null
+          id: string
+          is_archived: boolean | null
+          is_default: boolean | null
+          name: string
+          pdf_base64: string | null
+          pdf_url: string | null
+          tags: Json | null
+          target_title: string | null
+          updated_at: string | null
+          use_count: number | null
+          user_id: string
+          version: string | null
+        }
+        Insert: {
+          analysis?: Json | null
+          average_ats_score?: number | null
+          created_at?: string | null
+          id?: string
+          is_archived?: boolean | null
+          is_default?: boolean | null
+          name: string
+          pdf_base64?: string | null
+          pdf_url?: string | null
+          tags?: Json | null
+          target_title?: string | null
+          updated_at?: string | null
+          use_count?: number | null
+          user_id: string
+          version?: string | null
+        }
+        Update: {
+          analysis?: Json | null
+          average_ats_score?: number | null
+          created_at?: string | null
+          id?: string
+          is_archived?: boolean | null
+          is_default?: boolean | null
+          name?: string
+          pdf_base64?: string | null
+          pdf_url?: string | null
+          tags?: Json | null
+          target_title?: string | null
+          updated_at?: string | null
+          use_count?: number | null
+          user_id?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          available_from: string | null
+          bio: string | null
+          created_at: string | null
+          currency: string | null
+          current_title: string | null
+          email: string | null
+          first_name: string | null
+          github: string | null
+          hard_skills: Json | null
+          id: string
+          languages: Json | null
+          last_name: string | null
+          linkedin: string | null
+          location: string | null
+          phone: string | null
+          pitch_2min: string | null
+          pitch_30s: string | null
+          portfolio: string | null
+          profile_completion: number | null
+          remote_preference: string | null
+          search_status: string | null
+          soft_skills: Json | null
+          target_contracts: Json | null
+          target_salary_max: number | null
+          target_salary_min: number | null
+          target_sectors: Json | null
+          updated_at: string | null
+          user_id: string
+          years_experience: number | null
+        }
+        Insert: {
+          available_from?: string | null
+          bio?: string | null
+          created_at?: string | null
+          currency?: string | null
+          current_title?: string | null
+          email?: string | null
+          first_name?: string | null
+          github?: string | null
+          hard_skills?: Json | null
+          id?: string
+          languages?: Json | null
+          last_name?: string | null
+          linkedin?: string | null
+          location?: string | null
+          phone?: string | null
+          pitch_2min?: string | null
+          pitch_30s?: string | null
+          portfolio?: string | null
+          profile_completion?: number | null
+          remote_preference?: string | null
+          search_status?: string | null
+          soft_skills?: Json | null
+          target_contracts?: Json | null
+          target_salary_max?: number | null
+          target_salary_min?: number | null
+          target_sectors?: Json | null
+          updated_at?: string | null
+          user_id: string
+          years_experience?: number | null
+        }
+        Update: {
+          available_from?: string | null
+          bio?: string | null
+          created_at?: string | null
+          currency?: string | null
+          current_title?: string | null
+          email?: string | null
+          first_name?: string | null
+          github?: string | null
+          hard_skills?: Json | null
+          id?: string
+          languages?: Json | null
+          last_name?: string | null
+          linkedin?: string | null
+          location?: string | null
+          phone?: string | null
+          pitch_2min?: string | null
+          pitch_30s?: string | null
+          portfolio?: string | null
+          profile_completion?: number | null
+          remote_preference?: string | null
+          search_status?: string | null
+          soft_skills?: Json | null
+          target_contracts?: Json | null
+          target_salary_max?: number | null
+          target_salary_min?: number | null
+          target_sectors?: Json | null
+          updated_at?: string | null
+          user_id?: string
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
+      settings: {
+        Row: {
+          color_theme: string | null
+          density: string | null
+          id: string
+          mammouth_api_key: string | null
+          notifications_enabled: boolean | null
+          sla_applied: number | null
+          sla_interview: number | null
+          sla_watchlist: number | null
+          theme: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          color_theme?: string | null
+          density?: string | null
+          id?: string
+          mammouth_api_key?: string | null
+          notifications_enabled?: boolean | null
+          sla_applied?: number | null
+          sla_interview?: number | null
+          sla_watchlist?: number | null
+          theme?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          color_theme?: string | null
+          density?: string | null
+          id?: string
+          mammouth_api_key?: string | null
+          notifications_enabled?: boolean | null
+          sla_applied?: number | null
+          sla_interview?: number | null
+          sla_watchlist?: number | null
+          theme?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
