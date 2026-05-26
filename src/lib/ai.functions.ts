@@ -36,14 +36,14 @@ async function callMammouth(apiKey: string, messages: Msg[], opts?: { json?: boo
   throw lastErr instanceof Error ? lastErr : new Error("Échec appel IA");
 }
 
-async function getApiKey(supabase: ReturnType<typeof requireSupabaseAuth> extends never ? never : any, userId: string) {
+async function getApiKey(supabase: any, userId: string): Promise<string> {
   const { data, error } = await supabase
     .from("settings")
     .select("mammouth_api_key")
     .eq("user_id", userId)
     .maybeSingle();
   if (error) throw new Error(error.message);
-  const key = data?.mammouth_api_key?.trim();
+  const key = (data?.mammouth_api_key ?? "").trim();
   if (!key) throw new Error("Aucune clé API Mammouth configurée. Va dans Paramètres pour l'ajouter.");
   return key;
 }
