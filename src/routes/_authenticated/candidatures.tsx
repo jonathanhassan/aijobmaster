@@ -32,7 +32,11 @@ function Candidatures() {
     queryKey: ["settings"],
     queryFn: async () => {
       const { data } = await supabase.from("settings").select("sla_watchlist,sla_applied,sla_interview").maybeSingle();
-      return data ?? { sla_watchlist: 3, sla_applied: 7, sla_interview: 2 };
+      return {
+        sla_watchlist: data?.sla_watchlist ?? 3,
+        sla_applied: data?.sla_applied ?? 7,
+        sla_interview: data?.sla_interview ?? 2,
+      };
     },
   });
 
