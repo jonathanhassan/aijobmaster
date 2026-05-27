@@ -62,8 +62,19 @@ export interface Application {
   notes: string | null;
   archived_at: string | null;
   archive_reason: string | null;
+  contact_name: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
+  source: string | null;
+  interview_questions: Array<{ q: string; type: string; tip: string }>;
   created_at: string;
   updated_at: string;
+}
+
+export interface TimelineEvent {
+  date: string;
+  event: string;
+  type: "created" | "status" | "note" | "follow_up";
 }
 
 export interface Profile {
