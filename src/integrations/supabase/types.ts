@@ -76,6 +76,9 @@ export type Database = {
           company_logo: string | null
           company_size: string | null
           company_website: string | null
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
           contacts: Json | null
           contract_type: string | null
           cover_letter: string | null
@@ -84,6 +87,7 @@ export type Database = {
           description: string | null
           follow_ups: Json | null
           id: string
+          interview_questions: Json
           interviews: Json | null
           location: string | null
           nice_to_have_skills: Json | null
@@ -97,6 +101,7 @@ export type Database = {
           salary_max: number | null
           salary_min: number | null
           sector: string | null
+          source: string | null
           source_url: string | null
           status: string | null
           tags: Json | null
@@ -115,6 +120,9 @@ export type Database = {
           company_logo?: string | null
           company_size?: string | null
           company_website?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
           contacts?: Json | null
           contract_type?: string | null
           cover_letter?: string | null
@@ -123,6 +131,7 @@ export type Database = {
           description?: string | null
           follow_ups?: Json | null
           id?: string
+          interview_questions?: Json
           interviews?: Json | null
           location?: string | null
           nice_to_have_skills?: Json | null
@@ -136,6 +145,7 @@ export type Database = {
           salary_max?: number | null
           salary_min?: number | null
           sector?: string | null
+          source?: string | null
           source_url?: string | null
           status?: string | null
           tags?: Json | null
@@ -154,6 +164,9 @@ export type Database = {
           company_logo?: string | null
           company_size?: string | null
           company_website?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
           contacts?: Json | null
           contract_type?: string | null
           cover_letter?: string | null
@@ -162,6 +175,7 @@ export type Database = {
           description?: string | null
           follow_ups?: Json | null
           id?: string
+          interview_questions?: Json
           interviews?: Json | null
           location?: string | null
           nice_to_have_skills?: Json | null
@@ -175,6 +189,7 @@ export type Database = {
           salary_max?: number | null
           salary_min?: number | null
           sector?: string | null
+          source?: string | null
           source_url?: string | null
           status?: string | null
           tags?: Json | null
