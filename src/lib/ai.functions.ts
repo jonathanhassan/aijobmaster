@@ -206,3 +206,78 @@ Candidatures (${apps?.length ?? 0}): ${JSON.stringify(apps ?? [])}`;
     const output = await callMammouth(key, [{ role: "system", content: sys }, ...data.messages as Msg[]]);
     return { output };
   });
+
+export const aiExtractJobFromUrl = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { url: string }) => z.object({ url: z.string().url().max(2000) }).parse(d))
+  .handler(async ({ data, context }) => {
+    const key = await getApiKey(context.supabase, context.userId);
+    let html = "";
+    try {
+      const ctrl = new AbortController();
+      const to = setTimeout(() => ctrl.abort(), 10000);
+      const r = await fetch(data.url, { signal: ctrl.signal, headers: { "User-Agent": "Mozilla/5.0 JobMasterBot" } });
+      clearTimeout(to);
+      html = await r.text();
+    } catch {
+      throw new Error("Impossible de récupérer la page (URL inaccessible ou timeout)");
+    }
+    const text = html
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .slice(0, 12000);
+
+    const sys = `Tu extrais les infos d'une offre d'emploi. Réponds STRICTEMENT en JSON:
+{"title":string,"company":string,"location":string,"contract_type":string,"salary_min":number|null,"salary_max":number|null,"description":string}`;
+    const raw = await callMammouth(key, [
+      { role: "system", content: sys },
+      { role: "user", content: `Texte de la page:\n${text}` },
+    ], { json: true });
+    try {
+      const parsed = JSON.parse(raw);
+      return {
+        title: String(parsed.title ?? ""),
+        company: String(parsed.company ?? ""),
+        location: String(parsed.location ?? ""),
+        contract_type: String(parsed.contract_type ?? ""),
+        salary_min: parsed.salary_min ?? null,
+        salary_max: parsed.salary_max ?? null,
+        description: String(parsed.description ?? "").slice(0, 4000),
+      };
+    } catch {
+      throw new Error("Réponse IA invalide");
+    }
+  });
+
+export const aiInterviewPrep = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { applicationId: string }) => z.object({ applicationId: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    const key = await getApiKey(supabase, userId);
+    const [{ data: app }, { data: profile }] = await Promise.all([
+      supabase.from("applications").select("*").eq("id", data.applicationId).single(),
+      supabase.from("profiles").select("*").eq("user_id", userId).maybeSingle(),
+    ]);
+    if (!app) throw new Error("Candidature introuvable");
+
+    const sys = `Tu es un coach d'entretien. Génère 10 questions probables (mix RH + technique + situationnel) pour cet entretien. Réponds STRICTEMENT en JSON: {"questions":[{"q":string,"type":"RH"|"Technique"|"Situationnel","tip":string}]}`;
+    const userMsg = `Poste: ${app.title} chez ${app.company}
+Description: ${(app.description ?? "").slice(0, 2500)}
+Profil candidat: ${profile?.current_title ?? ""}, ${profile?.years_experience ?? 0} ans exp`;
+    const raw = await callMammouth(key, [
+      { role: "system", content: sys },
+      { role: "user", content: userMsg },
+    ], { json: true });
+    let questions: Array<{ q: string; type: string; tip: string }> = [];
+    try {
+      const parsed = JSON.parse(raw);
+      questions = Array.isArray(parsed.questions) ? parsed.questions : [];
+    } catch {
+      questions = [];
+    }
+    await supabase.from("applications").update({ interview_questions: questions }).eq("id", data.applicationId);
+    return { questions };
+  });
