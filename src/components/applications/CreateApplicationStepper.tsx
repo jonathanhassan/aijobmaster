@@ -285,5 +285,3 @@ export function CreateApplicationStepper({ open, onOpenChange }: { open: boolean
   );
 }
 
-// Bouton "Générer via IA" intégré — exposé via useServerFn dans le futur si besoin contextualisé
-export function _useGen() { return useServerFn(aiGenerateCoverLetter); }
